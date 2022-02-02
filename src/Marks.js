@@ -1,21 +1,17 @@
 export const Marks = ({
     data,
     xScale,
-    yScale,
-    xValue,
-    yValue,
-    tooltipFormat,
-    circleRadius
+    yScale
   }) =>
     data.map(d => (
-      <circle
-        className="mark"
-        cx={xScale(xValue(d))}
-        cy={yScale(yValue(d))}
-        r={circleRadius}
-      >
-        <title>{tooltipFormat(xValue(d))}</title>
-      </circle>
+      <rect
+            className="mark"
+            key={d.State}
+            x={0}//all bars start at x = 0
+            y={yScale(d.State)} // all bars start at whatever country position they are, according to our YsCale
+            width={xScale(d.MaxAQI)} // self-explanatory
+            height={yScale.bandwidth()} // height of bar is the bandwidth we set.
+          />
     ));
   
   
