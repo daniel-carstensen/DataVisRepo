@@ -56,69 +56,64 @@ const App = () => {
   const xAxisTickFormat = tickValue => siFormat(tickValue).replace('G', 'B');
 
   const xScale = scaleLinear()
-    .domain([0, max(data, d => d.MaxAQI)])
+    .domain([0, max(data, d => d['Max AQI'])])
     .range([0, innerWidth])
  
   const yScale = scaleBand()
-    .domain(data.map(d => d.State))
+    .domain(data.map(d => d['State']))
     .range([0, innerHeight]);
-  const str = JSON.stringify(data);
-  document.write(str);
 
-  return ( {
+  return (
     <>
-     <div>
-       <label for="x-select">X:</label>
-       <Dropdown
-         options={attributes}
-         id="x-select"
-         selectedValue={xAttribute} //We've done this before, just setting up the event listener and initailising its value.
-         onSelectedValueChange={setXAttribute}
-       />
-       <label for="y-select">Y:</label>
-       <Dropdown
-         options={attributes}
-         id="y-select"
-         selectedValue={yAttribute}
-         onSelectedValueChange={setYAttribute}
-       />
-       </div>
-     <div>
-       data = useData();
-     </div>
-       <svg width={width} height={height}>
-         <g transform={`translate(${margin.left},${margin.top})`}>
-           <AxisBottom
-             xScale={xScale}
-             innerHeight={innerHeight}
-             tickFormat={xAxisTickFormat}
-             tickOffset={5}
-           />
-           <text
-             className="axis-label"
-             textAnchor="middle"
-             transform={`translate(${-yAxisLabelOffset},${innerHeight /
-               2}) rotate(-90)`}
-           >
-             {yAxisLabel}
-           </text>
-           <AxisLeft yScale={yScale} innerWidth={innerWidth} tickOffset={5} />
-           <text
-             className="axis-label"
-             x={innerWidth / 2}
-             y={innerHeight + xAxisLabelOffset}
-             textAnchor="middle"
-           >
-             {xAxisLabel}
-           </text>
-           <Marks
-             data={data}
-             xScale={xScale}
-             yScale={yScale}
-           />
-         </g>
-       </svg> 
-     </>
+    <div>
+      <label for="x-select">X:</label>
+      <Dropdown
+        options={attributes}
+        id="x-select"
+        selectedValue={xAttribute} //We've done this before, just setting up the event listener and initailising its value.
+        onSelectedValueChange={setXAttribute}
+      />
+      <label for="y-select">Y:</label>
+      <Dropdown
+        options={attributes}
+        id="y-select"
+        selectedValue={yAttribute}
+        onSelectedValueChange={setYAttribute}
+      />
+      </div>
+      <svg width={width} height={height}>
+        <g transform={`translate(${margin.left},${margin.top})`}>
+          <AxisBottom
+            xScale={xScale}
+            innerHeight={innerHeight}
+            tickFormat={xAxisTickFormat}
+            tickOffset={5}
+          />
+          <text
+            className="axis-label"
+            textAnchor="middle"
+            transform={`translate(${-yAxisLabelOffset},${innerHeight /
+              2}) rotate(-90)`}
+          >
+            {yAxisLabel}
+          </text>
+          <AxisLeft yScale={yScale} data={data}/>
+          <text
+            className="axis-label"
+            x={innerWidth / 2}
+            y={innerHeight + xAxisLabelOffset}
+            textAnchor="middle"
+          >
+            {xAxisLabel}
+          </text>
+          <Marks
+            data={data}
+            xScale={xScale}
+            yScale={yScale}
+          />
+        </g>
+      </svg>
+    </>
   );
 };
 const rootElement = document.getElementById('root');

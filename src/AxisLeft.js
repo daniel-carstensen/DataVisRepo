@@ -1,16 +1,12 @@
-export const AxisLeft = ({ yScale, innerWidth, tickOffset = 3 }) =>
-  yScale.ticks().map(tickValue => (
-    <g className="tick" transform={`translate(0,${yScale(tickValue)})`}>
-      {/* create a line grid for each y tick */}
-      <line x2={innerWidth} /> 
-      <text
-        key={tickValue}
-        style={{ textAnchor: 'end' }}
-        x={-tickOffset}
-        dy=".32em"
-      >
-        {tickValue}
-      </text>
-    </g>
-  ));
-
+export const AxisLeft = ({ yScale, data }) =>
+  {yScale.domain().map(tickValue => (
+    <text
+      key={tickValue}
+      style={{ textAnchor: 'end' }} //aligns text to end
+      x={-3} // gives us a bit of space on the left
+      dy=".32em" // helps center
+      y={yScale(tickValue) + yScale.bandwidth() / 2}
+    >
+      {tickValue}
+    </text>
+  ))}
