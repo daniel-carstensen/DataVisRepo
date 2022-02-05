@@ -1,5 +1,5 @@
 export const AxisLeft = ({ yScale, data }) =>
-  {yScale.domain().map(tickValue => (
+  yScale.domain().map(tickValue => (
     <text
       key={tickValue}
       style={{ textAnchor: 'end' }} //aligns text to end
@@ -9,4 +9,4 @@ export const AxisLeft = ({ yScale, data }) =>
     >
       {tickValue}
     </text>
-  ))}
+  ));

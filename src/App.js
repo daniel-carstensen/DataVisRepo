@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { csv, scaleLinear, max, format, scaleBand } from 'd3';
+import { csv, scaleLinear, max, format, scaleBand, padding } from 'd3';
 import { useData } from './useData';
 import { AxisBottom } from './AxisBottom';
 import { AxisLeft } from './AxisLeft';
@@ -9,10 +9,10 @@ import { Dropdown } from './Dropdown';
 
 const width = 960;
 const menuHeight = 75;
-const height = 500 - menuHeight;
-const margin = { top: 20, right: 30, bottom: 65, left: 90 };
+const height = 1200 - menuHeight;
+const margin = { top: 20, right: 30, bottom: 65, left: 190 };
 const xAxisLabelOffset = 50;
-const yAxisLabelOffset = 45;
+const yAxisLabelOffset = 150;
 
 const attributes = [ //we're going to use this array of constants in the getLabel function
   { value: 'State', label: 'State' },
@@ -61,7 +61,8 @@ const App = () => {
  
   const yScale = scaleBand()
     .domain(data.map(d => d['State']))
-    .range([0, innerHeight]);
+    .range([0, innerHeight])
+    .padding(0.5);
 
   return (
     <>
@@ -101,7 +102,7 @@ const App = () => {
           <text
             className="axis-label"
             x={innerWidth / 2}
-            y={innerHeight + xAxisLabelOffset}
+            y={innerHeight + yAxisLabelOffset}
             textAnchor="middle"
           >
             {xAxisLabel}
