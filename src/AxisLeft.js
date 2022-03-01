@@ -1,4 +1,4 @@
-export const AxisLeft = ({ yScale, data }) =>
+export const AxisLeft = ({yScale}) =>
   yScale.domain().map(tickValue => (
     <text
       key={tickValue}

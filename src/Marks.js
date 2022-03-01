@@ -1,5 +1,6 @@
 export const Marks = ({
     data,
+    xValue,
     xScale,
     yScale
   }) =>
@@ -9,7 +10,7 @@ export const Marks = ({
             key={d['State']}
             x={0}//all bars start at x = 0
             y={yScale(d['State'])} // all bars start at whatever country position they are, according to our YsCale
-            width={xScale(d['Max AQI'])} // self-explanatory
+            width={xScale(xValue(d))} // self-explanatory
             height={yScale.bandwidth()} // height of bar is the bandwidth we set.
           />
     ));

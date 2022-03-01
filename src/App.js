@@ -1,11 +1,13 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-import { csv, scaleLinear, max, format, scaleBand, padding } from 'd3';
+import { csv, scaleLinear, max, format, scaleBand, scaleSequential, padding, colorbrewer } from 'd3';
 import { useData } from './useData';
 import { AxisBottom } from './AxisBottom';
 import { AxisLeft } from './AxisLeft';
 import { Marks } from './Marks';
 import { Dropdown } from './Dropdown';
+
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 
 const width = 960;
 const menuHeight = 75;
@@ -15,13 +17,10 @@ const xAxisLabelOffset = 50;
 const yAxisLabelOffset = 150;
 
 const attributes = [ //we're going to use this array of constants in the getLabel function
-  { value: 'State', label: 'State' },
   { value: 'Max AQI', label: 'Max AQI' },
   { value: 'Median AQI', label: 'Median AQI' },
   { value: 'Unhealthy for Sensitive Groups Days', label: 'Unhealthy for Sensitive Groups Days'},
   { value: 'Unhealthy Days', label: 'Unhealthy Days' },
-  { value: 'Very Unhealthy Days', label: 'Very Unhealthy Days'},
-  { value: 'Hazardous Days', label: 'Hazardous Days' }
 ];
 
 const getLabel = value => { //this is how we update the axes everytime the dropdown gets clicked!
@@ -40,10 +39,8 @@ const App = () => {
   const xValue = d => d[xAttribute];
   const xAxisLabel = getLabel(xAttribute); // this will allow us to update on every refresh
 
-  const initialYAttribute = 'State'; //same as above
-  const [yAttribute, setYAttribute] = useState(initialYAttribute);
-  const yValue = d => d[yAttribute];
-  const yAxisLabel = getLabel(yAttribute);
+  const [yAttribute, setYAttribute] = useState('State');
+  const yAxisLabel = 'State';
 
   if (!data) { //just a quick check if data is ready
     return <pre>Loading...</pre>;
@@ -56,13 +53,14 @@ const App = () => {
   const xAxisTickFormat = tickValue => siFormat(tickValue).replace('G', 'B');
 
   const xScale = scaleLinear()
-    .domain([0, max(data, d => d['Max AQI'])])
+    .domain([0, max(data, d => xValue(d))])
     .range([0, innerWidth])
+
  
   const yScale = scaleBand()
     .domain(data.map(d => d['State']))
     .range([0, innerHeight])
-    .padding(0.5);
+    .padding(0.1);
 
   return (
     <>
@@ -73,13 +71,6 @@ const App = () => {
         id="x-select"
         selectedValue={xAttribute} //We've done this before, just setting up the event listener and initailising its value.
         onSelectedValueChange={setXAttribute}
-      />
-      <label for="y-select">Y:</label>
-      <Dropdown
-        options={attributes}
-        id="y-select"
-        selectedValue={yAttribute}
-        onSelectedValueChange={setYAttribute}
       />
       </div>
       <svg width={width} height={height}>
@@ -109,6 +100,7 @@ const App = () => {
           </text>
           <Marks
             data={data}
+            xValue={xValue}
             xScale={xScale}
             yScale={yScale}
           />

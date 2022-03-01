@@ -9,6 +9,10 @@ export const useData = () => {
   useEffect(() => {
         let isMounted = true;
         const row = d => {
+          d['Max AQI'] = +d['Max AQI'];
+          d['Median AQI'] = +d['Median AQI'];
+          d['Unhealthy for Sensitive Groups Days'] = +d['Unhealthy for Sensitive Groups Days'];
+          d['Unhealthy Days'] = +d['Unhealthy Days'];
           console.log(d)
           return d;
         };
